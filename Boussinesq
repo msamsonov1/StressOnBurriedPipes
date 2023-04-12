@@ -1,0 +1,21 @@
+import math 
+
+# Input parameters, this is just a rough check
+depth = float(input("Enter the depth to the center of the pipe in ft: "))
+diameter = float(input("Enter the diameter of the pipe in ft: "))
+q = float(input("Enter the vertical load on the surface in lb/ft^2: "))
+
+# Calculation of stresses
+phi = math.atan(2 * depth / diameter)
+K = 1 - math.sin((math.pi/4) + (phi/2))**2 / (math.sin(phi/2)**2)
+sigma_v = q * K
+sigma_h = 2 * q * math.sin(phi/2)**2
+z = depth
+d = diameter / 2
+Cz = (1 + 0.2 * (d / z)) * ((d / z) ** 0.5)
+sigma_z = q / (2 * Cz) * ((1 + z / d) / (1 - z / d) ** 2) # Boussinesq stress calculation
+
+# Output results
+print(f"Vertical stress at the center of the pipe: {sigma_v:.2f} lb/ft^2")
+print(f"Horizontal stress at the center of the pipe: {sigma_h:.2f} lb/ft^2")
+print(f"Stress at a depth of {z:.2f} ft: {sigma_z:.2f} lb/ft^2")
